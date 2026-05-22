@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aleron MD presentation</title>
+<meta name="description" content="Aleron MD prevention presentation. A current copy of the original demo deck." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0A0A0B;
+  --ink-warm: #14110D;
+  --ink-3: #1A1612;
+  --paper: #F6F4EE;
+  --paper-warm: #EFEAE0;
+  --bone: #ECE5D6;
+  --gold: #D4A574;
+  --gold-light: #E8C99A;
+  --gold-deep: #B8854D;
+  --line: rgba(10,10,11,0.12);
+  --line-soft: rgba(10,10,11,0.06);
+  --line-dark: rgba(246,244,238,0.14);
+  --text: #0A0A0B;
+  --muted: #4A4A4D;
+  --warm-muted: #7A7068;
+  --red: #B95B4B;
+  --max: 1180px;
+  --gutter: clamp(22px, 5vw, 72px);
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  padding: 22px var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+}
+.logo {
+  pointer-events: auto;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 31px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1;
+}
+.logo .md { font-style: italic; letter-spacing: -0.025em; }
+.dark .logo, .photo .logo { color: var(--paper); }
+.slide {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 110px var(--gutter) 82px;
+  overflow: hidden;
+}
+.slide.light { background: var(--paper); }
+.slide.warm { background: var(--paper-warm); }
+.slide.dark { background: var(--ink-warm); color: var(--paper); }
+.slide.photo { color: #fff; background: var(--ink); }
+.photo-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.photo-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% center;
+  filter: saturate(0.74) contrast(1.04) brightness(0.62);
+}
+.photo-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(10,10,11,0.92) 0%, rgba(10,10,11,0.78) 27%, rgba(10,10,11,0.42) 52%, rgba(10,10,11,0.08) 78%),
+    linear-gradient(to bottom, rgba(10,10,11,0.12) 0%, rgba(10,10,11,0) 52%, rgba(10,10,11,0.38) 100%);
+}
+.wrap { position: relative; z-index: 2; width: min(var(--max), 100%); margin: 0 auto; }
+.display {
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.028em;
+  line-height: 1;
+}
+.h1 { font-size: clamp(52px, 7.4vw, 104px); max-width: 12.5ch; line-height: 1.03; }
+.h2 { font-size: clamp(44px, 6vw, 84px); max-width: 13.5ch; line-height: 1.04; }
+.h3 { font-size: clamp(33px, 4vw, 58px); max-width: 16ch; }
+.serif {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-light);
+  letter-spacing: -0.02em;
+}
+.light .serif, .warm .serif { color: var(--gold-deep); }
+.eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 28px;
+}
+.dark .eyebrow, .photo .eyebrow { color: var(--gold-light); }
+.lede {
+  margin-top: 24px;
+  max-width: 46ch;
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.55;
+  color: rgba(10,10,11,0.68);
+}
+.dark .lede, .photo .lede { color: rgba(255,255,255,0.82); }
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(42px, 7vw, 110px);
+  align-items: center;
+}
+.open-chart { width: 100%; }
+.chart-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--warm-muted);
+  margin-bottom: 20px;
+}
+.dark .chart-title, .photo .chart-title { color: rgba(246,244,238,0.72); }
+canvas { display: block; width: 100%; }
+.legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; font-size: 13px; color: rgba(10,10,11,0.58); }
+.dark .legend, .photo .legend { color: rgba(246,244,238,0.62); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.key { width: 28px; height: 2px; border-radius: 2px; display: inline-block; }
+.item-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 4vw, 54px);
+  margin-top: 88px;
+}
+.item {
+  border-top: 1px solid var(--line-dark);
+  padding-top: 22px;
+}
+.light .item, .warm .item { border-top-color: var(--line); }
+.line-icon { width: 42px; height: 42px; margin-bottom: 22px; color: var(--gold-light); }
+.light .line-icon, .warm .line-icon { color: var(--gold-deep); }
+.line-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.55; stroke-linecap: round; stroke-linejoin: round; }
+.item-title {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  margin-bottom: 10px;
+}
+.item-copy { font-size: 16px; color: rgba(246,244,238,0.72); max-width: 32ch; }
+.light .item-copy, .warm .item-copy { color: rgba(10,10,11,0.62); }
+.roi {
+  margin-top: 58px;
+  display: grid;
+  grid-template-columns: 0.9fr 1.35fr;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.invest, .return { padding: clamp(34px, 5vw, 62px); }
+.invest { background: var(--ink-warm); color: var(--paper); }
+.return { background: rgba(255,255,255,0.22); }
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 18px;
+}
+.invest .label { color: var(--gold-light); }
+.big-num {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: clamp(84px, 11vw, 142px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
+  color: var(--gold-light);
+}
+.stat-line { display: grid; grid-template-columns: 104px 1fr; gap: 22px; align-items: baseline; }
+.stat-num {
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 68px;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+  color: var(--gold-deep);
+}
+.stat-copy h3 { font-family: 'Inter Tight', sans-serif; font-size: 25px; font-weight: 500; letter-spacing: -0.025em; }
+.stat-copy p { color: rgba(10,10,11,0.6); font-size: 15px; margin-top: 4px; }
+.rule { height: 1px; background: var(--line); margin: 28px 0; }
+.features {
+  margin-top: 62px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--line-dark);
+  border-left: 1px solid var(--line-dark);
+}
+.feature {
+  min-height: 170px;
+  padding: 28px;
+  border-right: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line-dark);
+}
+.feature h3 { font-family: 'Inter Tight', sans-serif; font-size: 23px; font-weight: 500; letter-spacing: -0.025em; margin-bottom: 12px; }
+.feature p { color: rgba(246,244,238,0.66); font-size: 14px; line-height: 1.55; }
+.table-wrap { margin-top: 44px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; border-top: 1px solid var(--line); }
+th { padding: 18px 16px; font-size: 11px; letter-spacing: 0.13em; text-transform: uppercase; font-weight: 500; color: rgba(10,10,11,0.46); border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 16px; border-bottom: 1px solid var(--line-soft); color: rgba(10,10,11,0.67); vertical-align: top; }
+td:first-child { color: var(--ink); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+th.aleron, td.aleron { color: var(--ink); background: rgba(212,165,116,0.10); }
+th.aleron { color: var(--gold-deep); }
+.tag { color: #526244; font-weight: 600; white-space: nowrap; }
+.tag.partial { color: #8B5D32; }
+.tag.no { color: #99483D; }
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 64px;
+  border-top: 1px solid var(--line-dark);
+  border-left: 1px solid var(--line-dark);
+}
+.metric { min-height: 320px; padding: 36px; border-right: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); display: flex; flex-direction: column; justify-content: center; }
+.metric .num { font-family: 'Inter Tight', sans-serif; font-size: clamp(58px, 7vw, 92px); font-weight: 500; letter-spacing: -0.06em; line-height: 0.95; color: var(--gold-light); }
+.metric p { margin-top: 18px; color: rgba(246,244,238,0.72); font-size: 19px; line-height: 1.35; }
+.questions { margin-top: 68px; display: grid; gap: 34px; max-width: 920px; }
+.question { display: grid; grid-template-columns: 78px 1fr; gap: 24px; align-items: baseline; }
+.q-num { font-family: 'Source Serif 4', Georgia, serif; font-style: italic; color: var(--gold-deep); font-size: 26px; }
+.q-text { font-family: 'Inter Tight', sans-serif; font-size: clamp(32px, 3.8vw, 54px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; color: #5F574F; }
+.slide-no {
+  position: absolute;
+  right: 34px;
+  bottom: 28px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: rgba(10,10,11,0.30);
+}
+.dark .slide-no, .photo .slide-no { color: rgba(246,244,238,0.34); }
+@media (max-width: 900px) {
+  .two-col, .item-row, .roi, .features, .metrics { grid-template-columns: 1fr; }
+  .slide { padding: 96px 22px 64px; }
+  .nav { padding: 20px 22px; }
+  .logo { font-size: 26px; }
+  .stat-line { grid-template-columns: 1fr; }
+  table { min-width: 860px; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<nav class="nav" aria-label="Brand"><a class="logo" href="https://yimjason01-blip.github.io/aleron-md/index.html">Aleron <span class="md">MD</span></a></nav>
+
+<section class="slide light">
+  <div class="wrap two-col">
+    <div class="open-chart">
+      <div class="chart-title">Quality of life</div>
+      <canvas id="qolChart" height="390"></canvas>
+      <div class="legend"><span><i class="key" style="background:#B8854D"></i>Average American</span></div>
+    </div>
+    <div>
+      <span class="eyebrow">The curve</span>
+      <h1 class="display h2">The story of your future is written on top of <span class="serif">one curve.</span></h1>
+      <p class="lede">What your body can do at every age, from full capability to needing help.</p>
+    </div>
+  </div>
+  <div class="slide-no">01</div>
+</section>
+
+<section class="slide photo">
+  <div class="photo-bg"><img src="https://yimjason01-blip.github.io/aleron-md/assets/hero-rain-2560.jpg" alt=""></div>
+  <div class="wrap">
+    <span class="eyebrow">Inputs</span>
+    <h1 class="display h1">That curve is shaped by your <span class="serif">blood</span>, behavior, and DNA.</h1>
+    <div class="item-row">
+      <div class="item"><div class="line-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 5C17 15 13 22 13 29a11 11 0 0 0 22 0C35 22 31 15 24 5Z"></path><path d="M19 31c2.2 3 6.2 4 9.7 2.2"></path></svg></div><div class="item-title">Blood</div><p class="item-copy">Cholesterol, inflammation, metabolic markers, and the signals your body is sending right now.</p></div>
+      <div class="item"><div class="line-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 9a4.2 4.2 0 1 1-8.4 0 4.2 4.2 0 0 1 8.4 0Z"></path><path d="m22 17-5 9 8 4 5-7"></path><path d="m25 30-4 12"></path><path d="m16 26-8 2"></path><path d="m30 23 9 2"></path></svg></div><div class="item-title">Behavior</div><p class="item-copy">Fitness, sleep, training consistency, and the daily choices that bend your curve up or down.</p></div>
+      <div class="item"><div class="line-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M16 6c16 8 16 28 0 36"></path><path d="M32 6c-16 8-16 28 0 36"></path><path d="M18 14h12"></path><path d="M15 24h18"></path><path d="M18 34h12"></path></svg></div><div class="item-title">DNA</div><p class="item-copy">Genetic variants that set your baseline risk. Some can be offset. Some need earlier action.</p></div>
+    </div>
+  </div>
+  <div class="slide-no">02</div>
+</section>
+
+<section class="slide warm">
+  <div class="wrap two-col">
+    <div>
+      <span class="eyebrow">Bend it up</span>
+      <h1 class="display h2">If you know what to do, you can <span class="serif">shift and bend the curve.</span></h1>
+      <p class="lede">The same curve, but with the right interventions, it stays higher for longer.</p>
+    </div>
+    <div class="open-chart">
+      <div class="chart-title">Quality of life</div>
+      <canvas id="qolChart2" height="390"></canvas>
+      <div class="legend"><span><i class="key" style="background:#9D968D"></i>Average American</span><span><i class="key" style="background:#B8854D"></i>Best possible</span></div>
+    </div>
+  </div>
+  <div class="slide-no">03</div>
+</section>
+
+<section class="slide dark">
+  <div class="wrap two-col">
+    <div class="open-chart">
+      <div class="chart-title">Quality of life</div>
+      <canvas id="qolChart3" height="390"></canvas>
+      <div class="legend"><span><i class="key" style="background:#B95B4B"></i>Worst case</span><span><i class="key" style="background:#9D968D"></i>Average American</span><span><i class="key" style="background:#D4A574"></i>Best possible</span></div>
+    </div>
+    <div>
+      <span class="eyebrow">Bend it down</span>
+      <h1 class="display h2">But if you're not steering, it can bend the <span class="serif" style="color:#D98B74">other way.</span></h1>
+    </div>
+  </div>
+  <div class="slide-no">04</div>
+</section>
+
+<section class="slide light">
+  <div class="wrap">
+    <span class="eyebrow">What clarity buys</span>
+    <h1 class="display h2">One more session. <span class="serif">Two pills.</span></h1>
+    <p class="lede">That can be the gap between your current trajectory and your best one.</p>
+    <div class="roi">
+      <div class="invest">
+        <div class="label">You invest</div>
+        <div class="big-num">1</div>
+        <h2 class="display h3" style="margin-top:10px;">more hour per week</h2>
+        <p style="margin-top:18px;color:rgba(246,244,238,0.62);">One extra session. Two pills. One screening. That is it.</p>
+      </div>
+      <div class="return">
+        <div class="label">You get</div>
+        <div class="stat-line"><div class="stat-num">+6</div><div class="stat-copy"><h3>more years</h3><p>of mountain biking, snowboarding, keeping up with your daughter, and moving on your terms.</p></div></div>
+        <div class="rule"></div>
+        <div class="stat-line"><div class="stat-num" style="color:var(--red);">-3</div><div class="stat-copy"><h3>fewer years</h3><p>of decline, needing help, losing independence, and watching from the sideline instead of riding.</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-no">05</div>
+</section>
+
+<section class="slide dark">
+  <div class="wrap">
+    <span class="eyebrow">Continuous care</span>
+    <h1 class="display h2">The start is <span class="serif">just the start.</span></h1>
+    <p class="lede">Aleron MD does not hand you a report and disappear. It keeps working for you as your data changes.</p>
+    <div class="features">
+      <div class="feature"><h3>Continuous biometric monitoring</h3><p>Sleep, HRV, resting heart rate, and activity are tracked over time so the signal is caught before the symptom.</p></div>
+      <div class="feature"><h3>Labs retested every 6 months</h3><p>Blood work twice a year tracks what is changing, including ApoB, glucose, inflammation, and metabolic markers.</p></div>
+      <div class="feature"><h3>Emerging research, applied to you</h3><p>New evidence is matched against your genetics, labs, and history. When it matters for you, it enters the plan.</p></div>
+      <div class="feature"><h3>Priorities that evolve with you</h3><p>Your action plan is not static. New data changes the order of what matters now.</p></div>
+      <div class="feature"><h3>Physician access</h3><p>A physician works from your full picture: data, genetics, history, priorities, and prior decisions.</p></div>
+      <div class="feature"><h3>Behavior change support</h3><p>Optional coaching helps members turn insight into habits and make the plan livable.</p></div>
+    </div>
+  </div>
+  <div class="slide-no">06</div>
+</section>
+
+<section class="slide warm">
+  <div class="wrap">
+    <span class="eyebrow">Competitive landscape</span>
+    <h1 class="display h3">Aleron MD vs. <span class="serif">Consumer Market.</span></h1>
+    <p class="lede" style="font-size:15px;">Annual pricing. Green is included. Gold is partial. Red is not available.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th class="aleron">Aleron MD</th><th>Fountain Life</th><th>Wild Health</th><th>Your PCP</th><th>Function</th></tr></thead>
+      <tbody>
+        <tr><td>Cost</td><td class="aleron">$1,800 to $2,400/yr</td><td>$10,500 to $85,000/yr</td><td>$4,345 to $25,000/yr</td><td>$20 to $50/visit</td><td>About $360/yr</td></tr>
+        <tr><td>Wearables</td><td class="aleron"><span class="tag">Continuous</span></td><td><span class="tag">Via Zori AI</span></td><td><span class="tag partial">$25K tier only</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>Genetics</td><td class="aleron"><span class="tag">Invitae 167-gene panel</span></td><td><span class="tag">WGS</span></td><td><span class="tag">700K SNPs</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>Blood labs</td><td class="aleron"><span class="tag">Quest Elite, 100 markers, 2x/yr</span></td><td><span class="tag">100+, 1x/yr</span></td><td><span class="tag">68+, 4x/yr</span></td><td><span class="tag partial">About 20, 1x/yr</span></td><td><span class="tag">160+, 2x/yr</span></td></tr>
+        <tr><td>AI risk model</td><td class="aleron"><span class="tag">OpenEvidence + Claude Opus 4.6</span></td><td><span class="tag">Zori AI</span></td><td><span class="tag no">No</span></td><td><span class="tag partial">Guidelines</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>Action plan</td><td class="aleron"><span class="tag">Prioritized by effect size</span></td><td><span class="tag">MD + coach + AI</span></td><td><span class="tag">MD + coach</span></td><td><span class="tag partial">Standard of care</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>Imaging</td><td class="aleron"><span class="tag partial">Add-on</span></td><td><span class="tag">MRI, CT, DEXA</span></td><td><span class="tag partial">$25K tier only</span></td><td><span class="tag partial">Referral</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>Access</td><td class="aleron"><span class="tag">Fully virtual</span></td><td><span class="tag no">5 clinics</span></td><td><span class="tag">Virtual</span></td><td><span class="tag no">In-person</span></td><td><span class="tag">Virtual</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="slide-no">07</div>
+</section>
+
+<section class="slide warm">
+  <div class="wrap">
+    <span class="eyebrow">Executive health</span>
+    <h1 class="display h3">Aleron MD vs. <span class="serif">Executive Health.</span></h1>
+    <p class="lede" style="font-size:15px;">Health system executive programs are mostly annual, in person, and employer sold.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th class="aleron">Aleron MD</th><th>Mayo Clinic</th><th>Cleveland Clinic</th><th>Johns Hopkins</th><th>Inova</th></tr></thead>
+      <tbody>
+        <tr><td>Cost</td><td class="aleron">$1,800 to $2,400/yr</td><td>$5,000 to $10,000+</td><td>$3,500 to $6,000+</td><td>$3,000 to $7,000+</td><td>$2,000 to $4,500</td></tr>
+        <tr><td>Model</td><td class="aleron"><span class="tag">Continuous, virtual</span></td><td><span class="tag partial">1-day annual visit</span></td><td><span class="tag partial">1-day annual visit</span></td><td><span class="tag partial">1-day annual visit</span></td><td><span class="tag partial">1-day annual visit</span></td></tr>
+        <tr><td>Wearables</td><td class="aleron"><span class="tag">Continuous</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>Genetics</td><td class="aleron"><span class="tag">167-gene panel</span></td><td><span class="tag partial">Add-on</span></td><td><span class="tag partial">Add-on</span></td><td><span class="tag partial">Add-on</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>AI risk model</td><td class="aleron"><span class="tag">Multi-model board review</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td><td><span class="tag no">No</span></td></tr>
+        <tr><td>Imaging</td><td class="aleron"><span class="tag partial">Add-on</span></td><td><span class="tag">MRI, CT, DEXA</span></td><td><span class="tag">DEXA, add-on CT</span></td><td><span class="tag">CT, stress echo</span></td><td><span class="tag">CT, ultrasound</span></td></tr>
+        <tr><td>Broker ready</td><td class="aleron"><span class="tag">API + enrollment</span></td><td><span class="tag no">Direct to employer</span></td><td><span class="tag no">Direct to employer</span></td><td><span class="tag no">Direct to employer</span></td><td><span class="tag no">Direct to employer</span></td></tr>
+        <tr><td>Access</td><td class="aleron"><span class="tag">Fully virtual, nationwide</span></td><td><span class="tag no">Rochester, AZ, FL</span></td><td><span class="tag no">Cleveland, FL</span></td><td><span class="tag no">Baltimore</span></td><td><span class="tag no">Northern VA</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="slide-no">08</div>
+</section>
+
+<section class="slide photo">
+  <div class="photo-bg"><img src="https://yimjason01-blip.github.io/aleron-md/assets/photos/exp-05-loop.jpg" alt=""></div>
+  <div class="wrap">
+    <span class="eyebrow">Market signal</span>
+    <h1 class="display h2">The market wants it. <span class="serif">No one has built it.</span></h1>
+    <div class="metrics">
+      <div class="metric"><div class="num">23</div><p>interviews<br>16 executives<br>4 physicians<br>3 VCs</p></div>
+      <div class="metric"><div class="num">96%</div><p>believe the right medical team could bend their curve. 9% believe they can find that team.</p></div>
+      <div class="metric"><div class="num" style="font-size:48px;letter-spacing:-0.035em;">They have the money.</div><p>The barrier is clarity and time.</p></div>
+    </div>
+  </div>
+  <div class="slide-no">09</div>
+</section>
+
+<section class="slide light">
+  <div class="wrap">
+    <span class="eyebrow">Possibilities</span>
+    <h1 class="display h2">Where should Aleron MD go first?</h1>
+    <div class="questions">
+      <div class="question"><div class="q-num">01</div><div class="q-text">Do you see an employee benefit market for this?</div></div>
+      <div class="question"><div class="q-num">02</div><div class="q-text">Standalone, or bundled with another product?</div></div>
+      <div class="question"><div class="q-num">03</div><div class="q-text">What competition should we take seriously?</div></div>
+    </div>
+  </div>
+  <div class="slide-no">10</div>
+</section>
+
+<script>
+(function() {
+  const dpr = window.devicePixelRatio || 1;
+  function monoTangents(px) {
+    const n = px.length, d = [], m = [];
+    for (let i = 0; i < n - 1; i++) d[i] = (px[i + 1][1] - px[i][1]) / (px[i + 1][0] - px[i][0]);
+    m[0] = d[0]; m[n - 1] = d[n - 2];
+    for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+    for (let i = 0; i < n - 1; i++) {
+      if (Math.abs(d[i]) < 1e-6) { m[i] = 0; m[i + 1] = 0; continue; }
+      const a = m[i] / d[i], b = m[i + 1] / d[i], s = a * a + b * b;
+      if (s > 9) { const t = 3 / Math.sqrt(s); m[i] = t * a * d[i]; m[i + 1] = t * b * d[i]; }
+    }
+    return m;
+  }
+  function curve(ctx, px, color, width, dashed) {
+    const m = monoTangents(px);
+    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.setLineDash(dashed ? [10, 12] : []);
+    ctx.beginPath(); ctx.moveTo(px[0][0], px[0][1]);
+    for (let i = 0; i < px.length - 1; i++) {
+      const dx = px[i + 1][0] - px[i][0];
+      ctx.bezierCurveTo(px[i][0] + dx / 3, px[i][1] + m[i] * dx / 3, px[i + 1][0] - dx / 3, px[i + 1][1] - m[i + 1] * dx / 3, px[i + 1][0], px[i + 1][1]);
+    }
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+  function draw(id, lines, dark) {
+    const c = document.getElementById(id); if (!c) return;
+    const W = Math.max(320, c.parentElement.clientWidth); const H = 390;
+    c.width = W * dpr; c.height = H * dpr; c.style.width = W + 'px'; c.style.height = H + 'px';
+    const ctx = c.getContext('2d'); ctx.scale(dpr, dpr);
+    const pad = { top: 24, right: 18, bottom: 46, left: 112 };
+    const cw = W - pad.left - pad.right, ch = H - pad.top - pad.bottom;
+    const xA = age => pad.left + ((age - 30) / 65) * cw;
+    const yP = pct => pad.top + ((100 - pct) / 100) * ch;
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = dark ? 'rgba(246,244,238,0.16)' : 'rgba(10,10,11,0.14)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.left, yP(0)); ctx.lineTo(pad.left + cw, yP(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.left, yP(100)); ctx.lineTo(pad.left, yP(0)); ctx.stroke();
+    ctx.font = '500 12px Inter'; ctx.textAlign = 'center'; ctx.fillStyle = dark ? 'rgba(246,244,238,0.52)' : 'rgba(10,10,11,0.48)';
+    [40,60,80].forEach(age => ctx.fillText('AGE ' + age, xA(age), yP(0) + 26));
+    ctx.textAlign = 'right';
+    [['Do anything', 88], ['Active', 63], ['Slowing', 38], ['Need help', 13]].forEach(([label, pct]) => ctx.fillText(label, pad.left - 12, yP(pct) + 4));
+    lines.forEach(line => curve(ctx, line.points.map(d => [xA(d[0]), yP(d[1])]), line.color, line.width || 3, line.dashed));
+    lines.forEach(line => {
+      const first = line.points[0], last = line.points[line.points.length - 1];
+      ctx.fillStyle = line.color; [first, last].forEach(p => { ctx.beginPath(); ctx.arc(xA(p[0]), yP(p[1]), 4.5, 0, Math.PI * 2); ctx.fill(); });
+    });
+  }
+  const avg = [[30,84],[35,82],[40,79],[45,75],[50,70],[55,64],[60,56],[65,48],[70,40],[75,30],[78,20],[80,12],[82,4],[83,0]];
+  const best = [[30,97],[35,97],[40,96],[45,95],[50,94],[55,92],[60,89],[65,85],[70,80],[75,74],[78,68],[80,62],[82,55],[84,45],[86,30],[87,15],[88,0]];
+  const worst = [[30,82],[35,80],[40,76],[45,68],[50,58],[55,45],[60,30],[65,15],[68,4],[69,0]];
+  function redraw() {
+    draw('qolChart', [{ points: avg, color: '#B8854D', width: 3.2, dashed: true }], false);
+    draw('qolChart2', [{ points: avg, color: '#9D968D', width: 2.6, dashed: true }, { points: best, color: '#B8854D', width: 3.2 }], false);
+    draw('qolChart3', [{ points: worst, color: '#B95B4B', width: 3 }, { points: avg, color: '#9D968D', width: 2.6, dashed: true }, { points: best, color: '#D4A574', width: 3.2 }], true);
+  }
+  window.addEventListener('resize', redraw); redraw();
+})();
+</script>
+</body>
+</html>
